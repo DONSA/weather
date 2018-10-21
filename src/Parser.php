@@ -213,11 +213,17 @@ class Parser
     }
 
 
-    public function getXMLEntities($string){
-        return preg_replace('/[^\x09\x0A\x0D\x20-\x7F]/e', '$this->_privateXMLEntities("$0")', $string);
+    public function getXMLEntities($string)
+    {
+        return preg_replace_callback('/[^\x09\x0A\x0D\x20-\x7F]/', function($matches) {
+            foreach ($matches as $match) {
+                return $this->_privateXMLEntities($match);
+            }
+        }, $string);
     }
 
-    private function _privateXMLEntities($num){
+    private function _privateXMLEntities($num)
+    {
         $chars = [
             128 => '&#8364;', 130 => '&#8218;',
             131 => '&#402;', 132 => '&#8222;',
