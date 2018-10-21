@@ -28,9 +28,9 @@ class App
         ]);
     }
 
-    public function run($city): void
+    public function run(): void
     {
-        $response = $this->parser->getXMLTree("http://www.yr.no/place/Sweden/Scania/{$city}");
+        $response = $this->parser->getXMLTree(getenv('URL'));
 
         if (isset($response['ERROR'])) {
             throw new \RuntimeException($response['ERROR'][0]['VALUE']);

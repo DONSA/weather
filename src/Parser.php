@@ -4,18 +4,18 @@ namespace App;
 
 class Parser
 {
-    private function getYrDataErrorMessage($msg = 'Fail')
+    private function getYrDataErrorMessage($msg = 'Fail'): array
     {
         return [
-            '0'=> ['tag'=> 'WEATHERDATA','type'=> 'open','level'=> '1'],
-            '1'=> ['tag'=> 'LOCATION','type'=> 'open','level'=> '2'],
-            '2'=> ['tag'=> 'NAME','type'=> 'complete','level'=> '3','value'=> $msg],
-            '3'=> ['tag'=> 'LOCATION','type'=> 'complete','level'=> '3'],
-            '4'=> ['tag'=> 'LOCATION', 'type'=> 'close', 'level'=> '2'],
-            '5'=> ['tag'=> 'FORECAST', 'type'=> 'open', 'level'=> '2'],
-            '6'=> ['tag'=> 'ERROR', 'type'=> 'complete', 'level'=> '3', 'value'=> $msg],
-            '7'=> ['tag'=> 'FORECAST', 'type'=> 'close', 'level'=> '2'],
-            '8'=> ['tag'=> 'WEATHERDATA', 'type'=> 'close', 'level'=> '1']
+            ['tag'=> 'WEATHERDATA','type'=> 'open','level'=> '1'],
+            ['tag'=> 'LOCATION','type'=> 'open','level'=> '2'],
+            ['tag'=> 'NAME','type'=> 'complete','level'=> '3','value'=> $msg],
+            ['tag'=> 'LOCATION','type'=> 'complete','level'=> '3'],
+            ['tag'=> 'LOCATION', 'type'=> 'close', 'level'=> '2'],
+            ['tag'=> 'FORECAST', 'type'=> 'open', 'level'=> '2'],
+            ['tag'=> 'ERROR', 'type'=> 'complete', 'level'=> '3', 'value'=> $msg],
+            ['tag'=> 'FORECAST', 'type'=> 'close', 'level'=> '2'],
+            ['tag'=> 'WEATHERDATA', 'type'=> 'close', 'level'=> '1']
         ];
     }
 
@@ -72,7 +72,7 @@ class Parser
     {
         $parser = xml_parser_create('ISO-8859-1');
 
-        if ((0 === $parser)||(false === $parser)) {
+        if ((0 === $parser) || (false === $parser)) {
             return $this->getYrDataErrorMessage('Det oppstod en feil mens værdata ble forsøkt hentet fra yr.no. Teknisk info: Kunne ikke lage XML parseren.');
         }
 
@@ -82,7 +82,7 @@ class Parser
         }
 
         if (0 === xml_parse_into_struct($parser, $data, $values, $index)) {
-            return $this->getYrDataErrorMessage('Det oppstod en feil mens værdata ble forsøkt hentet fra yr.no. Teknisk info: Parsing av XML feilet.');
+            return $this->getYrDataErrorMessage('Parsing of XML failed');
         }
 
         if (false === xml_parser_free($parser)) {
@@ -180,7 +180,7 @@ class Parser
         $i = 0;
         if (isset($values[$i]['attributes'])) {
             $tree[$values[$i]['tag']][]['ATTRIBUTES']=$values[$i]['attributes'];
-            $index=count($tree[$values[$i]['tag']])-1;
+            $index = \count($tree[$values[$i]['tag']]) - 1;
             $tree[$values[$i]['tag']][$index]=array_merge($tree[$values[$i]['tag']][$index], $this->rearrangeChildren($values, $i));
         } else {
             $tree[$values[$i]['tag']][] = $this->rearrangeChildren($values, $i);
@@ -241,7 +241,7 @@ class Parser
             159 => '&#376;'
         ];
 
-        $num = ord($num);
+        $num = \ord($num);
 
         return (
         ($num > 127 && $num < 160) ? $chars[$num] : "&#{$num};"
