@@ -1,3 +1,8 @@
+# Custom
+.DS_Store
+.env
+.idea/
+
 # Cache and logs (Symfony2)
 /app/cache/*
 /app/logs/*
