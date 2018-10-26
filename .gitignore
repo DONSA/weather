@@ -2,6 +2,7 @@
 .DS_Store
 .env
 .idea/
+.AppleDouble/
 
 # Cache and logs (Symfony2)
 /app/cache/*
