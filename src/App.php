@@ -90,7 +90,7 @@ class App
                     'token' => getenv('PUSHOVER_TOKEN'),
                     'user' => getenv('PUSHOVER_USER'),
                     'title' => 'Will it rain?',
-                    'message' => $message,
+                    'message' => trim($message),
                     'sound' => 'gamelan',
                 ]
             ]);

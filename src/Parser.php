@@ -41,31 +41,7 @@ class Parser
             throw new InvalidArgumentException('Invalid data');
         }
 
-        if (function_exists('curl_init')) {
-            $localXmlUrl = 'cache/curl.temp.xml';
-
-            $ch = curl_init($url);
-            $fp = fopen($localXmlUrl, 'wb');
-            curl_setopt($ch, CURLOPT_FILE, $fp);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, '');
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-            curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-            curl_exec($ch);
-            curl_close($ch);
-            fclose($fp);
-            $data = file_get_contents($localXmlUrl, 0, $ctx);
-
-            unlink($localXmlUrl);
-
-            if (false === $data) {
-                return $this->getYrXMLErrorMessage('There was an error fetching weather data was read from yr.no');
-            }
-
-            return $data;
-        }
-
-        return $this->getYrXMLErrorMessage('Det oppstod en feil mens værdata ble forsøkt lest fra yr.no. Teknisk info: Denne PHP-installasjon har verken URL enablede fopen_wrappers eller cURL. Dette gjør det umulig å hente ned værdata. Se imiddlertid følgende dokumentasjon: http://no.php.net/manual/en/wrappers.php, http://no.php.net/manual/en/book.curl.php');
+        return $data;
     }
 
     private function parseXMLIntoStruct($data)
@@ -73,12 +49,12 @@ class Parser
         $parser = xml_parser_create('ISO-8859-1');
 
         if ((0 === $parser) || (false === $parser)) {
-            return $this->getYrDataErrorMessage('Det oppstod en feil mens værdata ble forsøkt hentet fra yr.no. Teknisk info: Kunne ikke lage XML parseren.');
+            return $this->getYrDataErrorMessage("Could't create XML parser");
         }
 
         $values = [];
         if (false === xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1)) {
-            return $this->getYrDataErrorMessage('Det oppstod en feil mens værdata ble forsøkt hentet fra yr.no. Teknisk info: Kunne ikke stille inn XML-parseren.');
+            return $this->getYrDataErrorMessage("Could't set the XML parser");
         }
 
         if (0 === xml_parse_into_struct($parser, $data, $values, $index)) {
@@ -86,7 +62,7 @@ class Parser
         }
 
         if (false === xml_parser_free($parser)) {
-            return $this->getYrDataErrorMessage('Det oppstod en feil mens værdata ble forsøkt hentet fra yr.no. Kunne ikke frigjøre XML-parseren.');
+            return $this->getYrDataErrorMessage('Could not free up the XML parser');
         }
 
         return $values;
@@ -95,11 +71,11 @@ class Parser
 
     private function sanitizeString($in)
     {
-        if(is_array($in)) {
+        if (is_array($in)) {
             return $in;
         }
 
-        if(null === $in) {
+        if (null === $in) {
             return null;
         }
 
@@ -244,7 +220,7 @@ class Parser
         $num = \ord($num);
 
         return (
-        ($num > 127 && $num < 160) ? $chars[$num] : "&#{$num};"
+          ($num > 127 && $num < 160) ? $chars[$num] : "&#{$num};"
         );
     }
 }
