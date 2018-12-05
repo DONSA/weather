@@ -66,8 +66,9 @@ class App
                     // $w = $time['WINDSPEED'][0]['ATTRIBUTES']['NAME'];
 
                     $symbolName = $time['SYMBOL'][0]['ATTRIBUTES']['NAME'];
-                    $symbolCode = intval($time['SYMBOL'][0]['ATTRIBUTES']['NUMBER']);
+                    $symbolCode = \intval($time['SYMBOL'][0]['ATTRIBUTES']['NUMBER']);
 
+                    $description = '';
                     switch ($symbolCode) {
                     case 5: // Rain showers
                         $icon = '🌧';
@@ -75,11 +76,19 @@ class App
                     case 9: // Rain
                         $icon = '🌦';
                         break;
+                    case 12: // Sleet
+                        $icon = '🌨';
+                        break;
                     default:
-                        $icon = '🌧';
+                        $description = "{$symbolName} ({$symbolCode})";
+                        $icon = '❔';
                     }
 
-                    $message .= "{$icon} {$fromTime}:00h | {$precipitation}mm | {$temperature}°C | {$symbolName} ({$symbolCode})\n";
+                    $message .= "{$icon} {$fromTime}:00h | {$precipitation}mm | {$temperature}°C\n";
+
+                    if ($description) {
+                        $message .= " | {$description}";
+                    }
                 }
             }
         }
