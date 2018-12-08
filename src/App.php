@@ -70,25 +70,30 @@ class App
 
                     $description = '';
                     switch ($symbolCode) {
-                    case 5: // Rain showers
-                        $icon = '🌧';
-                        break;
-                    case 9: // Rain
-                        $icon = '🌦';
-                        break;
-                    case 12: // Sleet
-                        $icon = '🌨';
-                        break;
-                    default:
-                        $description = "{$symbolName} ({$symbolCode})";
-                        $icon = '❔';
+                        case 5: // Rain showers
+                            $icon = '🌦';
+                            break;
+                        case 9: // Rain
+                            $icon = '🌧';
+                            break;
+                        case 10: // Heavy rain
+                            $icon = '🌧';
+                            break;
+                        case 12: // Sleet
+                            $icon = '🌨';
+                            break;
+                        default:
+                            $description = "{$symbolName} ({$symbolCode})";
+                            $icon = '❔';
                     }
 
-                    $message .= "{$icon} {$fromTime}:00h | {$precipitation}mm | {$temperature}°C\n";
+                    $message .= "{$icon} {$fromTime}:00h | {$precipitation}mm | {$temperature}°C";
 
                     if ($description) {
                         $message .= " | {$description}";
                     }
+
+                    $message .= "\n";
                 }
             }
         }

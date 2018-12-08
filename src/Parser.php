@@ -19,11 +19,6 @@ class Parser
         ];
     }
 
-    private function getYrXMLErrorMessage($msg = 'Fail')
-    {
-        return $this->getXMLEntities($msg);
-    }
-
     private function loadXMLData($url, $timeout = 10)
     {
         // $url .= '/varsel.xml';
@@ -38,7 +33,7 @@ class Parser
         $data = file_get_contents($url, 0, $ctx);
 
         if (!$data){
-            throw new InvalidArgumentException('Invalid data');
+            throw new \InvalidArgumentException('Invalid data');
         }
 
         return $data;
@@ -71,7 +66,7 @@ class Parser
 
     private function sanitizeString($in)
     {
-        if (is_array($in)) {
+        if (\is_array($in)) {
             return $in;
         }
 
@@ -91,7 +86,7 @@ class Parser
             $children['VALUE'] = $this->sanitizeString($vals[$i]['value']);
         }
 
-        while (++$i < count($vals)) {
+        while (++$i < \count($vals)) {
 
             if (isset($vals[$i]['value'])) {
                 $val = $this->sanitizeString($vals[$i]['value']);
@@ -124,7 +119,7 @@ class Parser
             case 'complete':
                 if (isset($atr)) {
                     $children[$tag][]['ATTRIBUTES'] = $atr;
-                    $index = count($children[$tag])-1;
+                    $index = \count($children[$tag])-1;
                     if (isset($val))$children[$tag][$index]['VALUE'] = $val;
                     else $children[$tag][$index]['VALUE'] = '';
                 } else {
@@ -135,7 +130,7 @@ class Parser
             case 'open':
                 if (isset($atr)) {
                     $children[$tag][]['ATTRIBUTES'] = $atr;
-                    $index = count($children[$tag])-1;
+                    $index = \count($children[$tag])-1;
                     $children[$tag][$index] = array_merge(
                         $children[$tag][$index],
                         $this->rearrangeChildren($vals, $i)
