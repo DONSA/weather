@@ -80,7 +80,7 @@ class App
                             $icon = '🌧';
                             break;
                         case 12: // Sleet
-                            $icon = '🌨';
+                            $icon = '❄️';
                             break;
                         default:
                             $description = "{$symbolName} ({$symbolCode})";
