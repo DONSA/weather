@@ -70,6 +70,9 @@ class App
 
                     $description = '';
                     switch ($symbolCode) {
+                        case 5: // Coudy
+                            $icon = '☁️';
+                            break;
                         case 5: // Rain showers
                             $icon = '🌦';
                             break;
@@ -79,8 +82,14 @@ class App
                         case 10: // Heavy rain
                             $icon = '🌧';
                             break;
+                        case 11: // Heavy rain and thunder
+                            $icon = '⛈';
+                            break;
                         case 12: // Sleet
                             $icon = '❄️';
+                            break;
+                        case 22: // Rain and thunder
+                            $icon = '⛈';
                             break;
                         default:
                             $description = "{$symbolName} ({$symbolCode})";
