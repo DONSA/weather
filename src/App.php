@@ -86,6 +86,10 @@ class App
                             $icon = '⛈';
                             break;
                         case 12: // Sleet
+                            $icon = '🌨';
+                            break;
+                        case 13: // Snow
+                        case 14: // Heavy snow
                             $icon = '❄️';
                             break;
                         case 22: // Rain and thunder
