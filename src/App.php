@@ -70,7 +70,7 @@ class App
 
                     $description = '';
                     switch ($symbolCode) {
-                        case 5: // Coudy
+                        case 4: // Coudy
                             $icon = '☁️';
                             break;
                         case 5: // Rain showers
